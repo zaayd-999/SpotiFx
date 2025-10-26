@@ -1,6 +1,13 @@
 package com.SpotiFx.main.Class.Player;
 
 public enum contributionType {
-    Artiste,
-    Publisher
+    Artist,
+    Publisher,
+    Producer,
+    LeadVocals,
+    LeadGuitar,
+    Bass,
+    Drums,
+    Piano,
+    Songwriter
 }

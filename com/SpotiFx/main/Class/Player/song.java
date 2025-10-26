@@ -10,7 +10,7 @@ public class song {
     private String lyricsPath;
     private final int year;
     private final String genre;
-    private credits SongCredits;
+    private songCredits SongCredits;
 
     private song(songBuilder builder){
         this.title = builder.title;
@@ -47,10 +47,11 @@ public class song {
     public String getGenre() { return this.genre; }
     public String getFilePath() { return this.filePath; }
     public String getLyricsPath() {return this.lyricsPath; }
+    public songCredits getSongCredits() {return this.SongCredits; }
     // Setters
     public void setLyricsPath(String lyricsPath){ this.lyricsPath = lyricsPath; }
     public void setFilePath(String filePath){ this.filePath = filePath; }
-    public void setSongCredits(credits SongCredits) { this.SongCredits = SongCredits; }
+    public void setSongCredits(songCredits SongCredits) { this.SongCredits = SongCredits; }
 
     // Start making a song
     public static songBuilder builder(){
@@ -75,9 +76,9 @@ public class song {
         private String lyricsPath;
         private int year=2025;
         private String genre;
-        private credits SongCredits;
+        private songCredits SongCredits;
 
-        public  songBuilder(String title , String artist) {
+        public songBuilder(String title , String artist) {
             this.title = title;
             this.artist = artist;
         }
@@ -130,7 +131,7 @@ public class song {
             return this;
         }
 
-        public songBuilder credits(credits credit) {
+        public songBuilder credits(songCredits credit) {
             this.SongCredits = credit;
             return  this;
         }
