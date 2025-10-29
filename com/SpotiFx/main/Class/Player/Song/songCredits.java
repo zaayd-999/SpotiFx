@@ -1,4 +1,4 @@
-package com.SpotiFx.main.Class.Player;
+package com.SpotiFx.main.Class.Player.Song;
 import java.util.HashMap;
 
 public class songCredits {

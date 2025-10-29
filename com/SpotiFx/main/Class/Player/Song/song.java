@@ -1,7 +1,8 @@
-package com.SpotiFx.main.Class.Player;
+package com.SpotiFx.main.Class.Player.Song;
 
 
 public class song {
+    private final int id;
     private final String title;
     private final String album;
     private final String artist;
@@ -13,6 +14,7 @@ public class song {
     private songCredits SongCredits;
 
     private song(songBuilder builder){
+        this.id = builder.id;
         this.title = builder.title;
         this.artist = builder.artist;
         this.duration = builder.duration;
@@ -36,7 +38,8 @@ public class song {
                 .album(this.album)
                 .duration(this.duration)
                 .year(this.year)
-                .genre(this.genre);
+                .genre(this.genre)
+                .id(this.id);
     }
     // Getters
     public String getTitle() { return this.title; }
@@ -48,6 +51,7 @@ public class song {
     public String getFilePath() { return this.filePath; }
     public String getLyricsPath() {return this.lyricsPath; }
     public songCredits getSongCredits() {return this.SongCredits; }
+    public int getSongId() { return this.id; }
     // Setters
     public void setLyricsPath(String lyricsPath){ this.lyricsPath = lyricsPath; }
     public void setFilePath(String filePath){ this.filePath = filePath; }
@@ -77,6 +81,7 @@ public class song {
         private int year=2025;
         private String genre;
         private songCredits SongCredits;
+        private int id=-1;
 
         public songBuilder(String title , String artist) {
             this.title = title;
@@ -135,8 +140,14 @@ public class song {
             this.SongCredits = credit;
             return  this;
         }
+
+        public songBuilder id(int id) {
+            this.id = id;
+            return this;
+        }
         // Make a song
         public song build(){
+            if(id == -1) throw new IllegalStateException("Id is required");
             if(title==null) throw new IllegalStateException("Title is required");
             if(artist==null) throw new IllegalStateException("Artist is required");
             return new song(this);
