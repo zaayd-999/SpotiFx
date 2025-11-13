@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 
 public class playList {
-    private playlist playList;
+    private final playlist playList;
     private int totalSongs;
     private int currentSong;
     private boolean playing;
