@@ -90,7 +90,7 @@ public class songCredits {
             }
         }
 
-        json.append("}}");
+        json.append("}");
         return json.toString();
     }
 }
