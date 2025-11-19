@@ -1,8 +1,10 @@
 package com.SpotiFx.main.Class.Player.Song;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class songCredits {
-    private final HashMap<contributionType,HashMap<String,contributionType>> songCredits;
+    private final HashMap<contributionType, HashMap<String, contributionType>> songCredits;
 
     public songCredits() {
         this.songCredits = new HashMap<>();
@@ -12,51 +14,83 @@ public class songCredits {
         }
     }
 
-    public void addContributor(contributionType role , String name) {
-        songCredits.get(role).put(name,role);
+    public void addContributor(contributionType role, String name) {
+        songCredits.get(role).put(name, role);
     }
 
-    public void addContributors(contributionType role , String... names) {
-        for(String name : names) addContributor(role,name);
+    public void addContributors(contributionType role, String... names) {
+        for (String name : names) addContributor(role, name);
     }
 
-    public void removeContributor(contributionType role , String name) {
+    public void removeContributor(contributionType role, String name) {
         songCredits.get(role).remove(name);
     }
 
-    public void removeContributors(contributionType role , String... names){
-        for(String name : names) removeContributor(role,name);
+    public void removeContributors(contributionType role, String... names) {
+        for (String name : names) removeContributor(role, name);
     }
 
     public void removeContribution(contributionType role) {
         songCredits.remove(role);
     }
 
-    public void removeContributions(contributionType... roles){
-        for(contributionType role : roles) removeContribution(role);
+    public void removeContributions(contributionType... roles) {
+        for (contributionType role : roles) removeContribution(role);
     }
 
-    public void addContribution(contributionType role){
-        songCredits.putIfAbsent(role , new HashMap<>());
+    public void addContribution(contributionType role) {
+        songCredits.putIfAbsent(role, new HashMap<>());
     }
 
-    public void addContributions(contributionType... roles){
+    public void addContributions(contributionType... roles) {
         for (contributionType role : roles) addContribution(role);
     }
 
-    public boolean isContributor(contributionType role , String name) {
+    public boolean isContributor(contributionType role, String name) {
         return songCredits.containsKey(role) && songCredits.get(role).containsKey(name);
     }
 
     public void displayCredits() {
         System.out.println("\uD83C\uDFB5 SONG CREDITS \uD83C\uDFB5\n" +
                 "==================");
-        for(contributionType role : contributionType.values()) {
+        for (contributionType role : contributionType.values()) {
             System.out.print("• " + role + " : ");
-            for(String name : songCredits.get(role).keySet()) {
+            for (String name : songCredits.get(role).keySet()) {
                 System.out.print(name + ",");
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public String toString() {
+        return stringify();
+    }
+
+    public String stringify() {
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+
+        contributionType[] roles = contributionType.values();
+        for (int i = 0; i < roles.length; i++) {
+            contributionType role = roles[i];
+            json.append("\"").append(role.toString().toLowerCase()).append("\":[");
+
+            List<String> names = new ArrayList<>(songCredits.get(role).keySet());
+            for (int j = 0; j < names.size(); j++) {
+                json.append("\"").append(names.get(j)).append("\"");
+                if (j < names.size() - 1) {
+                    json.append(",");
+                }
+            }
+
+            json.append("]");
+            if (i < roles.length - 1) {
+                json.append(",");
+            }
+        }
+
+        json.append("}}");
+        return json.toString();
     }
 }
