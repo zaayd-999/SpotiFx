@@ -4,17 +4,28 @@ import com.SpotiFx.main.Class.Player.Song.song;
 import java.util.HashMap;
 
 
-public class playList {
+public abstract class playList {
     private final playlist playList;
     private int totalSongs;
     private int currentSong;
     private boolean playing;
+    private playlistType type;
+    private int id;
 
-    public playList() {
+    public playList(int id) {
         this.playList = new playlist();
         this.currentSong = -1;
         this.totalSongs = 0;
         this.playing = false;
+        this.id = id;
+    }
+
+    public int getPlayListId() {
+        return this.id;
+    }
+
+    public playlistType getPlayListType() {
+        return this.type;
     }
 
     public void addSong(song thisSong) {

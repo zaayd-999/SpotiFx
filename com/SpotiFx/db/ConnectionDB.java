@@ -4,6 +4,7 @@ import com.SpotiFx.db.Callbacks.*;
 import com.SpotiFx.db.Classes.*;
 import java.sql.*;
 import java.sql.Connection;
+import java.util.concurrent.CompletableFuture;
 
 public class ConnectionDB {
     private final String HOST;
@@ -91,6 +92,41 @@ public class ConnectionDB {
         query(SQL_QUERY , callback , new Object[]{});
     }
 
+    // Async version of this
+
+    public CompletableFuture<QueryResults> queryAsync(String SQL_QUERY , Object[] params) {
+        CompletableFuture<QueryResults> future = new CompletableFuture<>();
+
+        query(SQL_QUERY , (error, result) -> {
+            if(error == null ) {
+                future.complete(result);
+            } else {
+                future.completeExceptionally(error);
+            }
+        } , params);
+
+        return future;
+    };
+
+    public CompletableFuture<QueryResults> queryAsync(String SQL_QUERY ) {
+        return queryAsync(SQL_QUERY,new Object[]{});
+    };
+
+    // Sync version of this
+
+    public QueryResults querySync(String SQL_QUERY , Object[] params) {
+        try {
+            return queryAsync(SQL_QUERY,params).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public QueryResults querySync(String SQL_QUERY) {
+        return querySync(SQL_QUERY , new Object[]{});
+    }
+
+
     public void firstQuery(String SQL_QUERY , firstQueryCallback callback , Object[] params) {
         query(SQL_QUERY , (error, results) -> {
             if(error != null) {
@@ -109,6 +145,40 @@ public class ConnectionDB {
         firstQuery(SQL_QUERY , callback , new Object[]{});
     }
 
+    // Async version of this code
+
+    public CompletableFuture<QueryResult> firstQueryAsync ( String SQL_QUERY , Object[] params ) {
+        CompletableFuture<QueryResult> future = new CompletableFuture<>();
+
+        firstQuery(SQL_QUERY , (error, results) -> {
+            if(error == null) {
+                future.complete(results);
+            } else {
+                future.completeExceptionally(error);
+            }
+        } , params);
+
+        return future;
+    }
+
+    public CompletableFuture<QueryResult> firstQueryAsync ( String SQL_QUERY ) {
+        return firstQueryAsync( SQL_QUERY , new Object[]{} );
+    }
+
+    // Sync version of this code
+
+    public QueryResult firstQuerySync(String SQL_QUERY , Object[] params) {
+        try {
+            return firstQueryAsync(SQL_QUERY,params).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public QueryResult firstQuerySync(String SQL_QUERY) {
+        return firstQuerySync(SQL_QUERY, new Object[]{});
+    }
+
     public void execute(String SQL_EXECUTE , ExecuteCallback callback , Object[] params) {
         try {
             PreparedStatement stmt = this.connection.prepareStatement(SQL_EXECUTE);
@@ -124,6 +194,40 @@ public class ConnectionDB {
 
     public void execute(String SQL_EXECUTE , ExecuteCallback callback ) {
         execute(SQL_EXECUTE,callback,new Object[]{});
+    }
+
+    // Async Version of this
+
+    public CompletableFuture<Integer> executeAsync(String SQL_EXECUTE , Object[] params) {
+        CompletableFuture<Integer> future = new CompletableFuture<>();
+
+        execute(SQL_EXECUTE,(error, affectedRows) -> {
+            if(error == null) {
+                future.complete(affectedRows);
+            } else {
+                future.completeExceptionally(error);
+            }
+        },params);
+
+        return future;
+    }
+
+    public CompletableFuture<Integer> executeAsync(String SQL_EXECUTE) {
+        return executeAsync(SQL_EXECUTE,new Object[]{});
+    }
+
+    // Sync version of this
+
+    public Integer executeSync(String SQL_EXECUTE , Object[] params) {
+        try {
+            return executeAsync(SQL_EXECUTE,params).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Integer executeSync(String SQL_EXECUTE) {
+        return executeSync(SQL_EXECUTE,new Object[]{});
     }
 
     public Connection getConnection(){

@@ -9,12 +9,14 @@ public class envLoader {
     private final HashMap<Object,Object> envMap = new HashMap<>();
 
     public envLoader() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/com/SpotiFx/dotenv/.env"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/com/SpotiFx/dotenv/.env"))) { // Read .env FILE if exists
             String line;
             while((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty() || line.startsWith("#")) continue;
+                if (line.trim().isEmpty()) continue; // Check if line is empty
+                if (line.startsWith("#")) continue; // COMMENT
                 String[] parts = line.split("=", 2);
                 if (parts.length == 2) {
+                    if(parts[1].trim().isEmpty() || parts[1] == "") continue;
                     envMap.put(parts[0].trim(), parts[1].trim());
                 }
             }
@@ -23,6 +25,6 @@ public class envLoader {
 
 
     public Object get(Object key) {
-        return envMap.get(key);
+        return envMap.get(key) == null ? "None." : envMap.get(key);
     }
 }

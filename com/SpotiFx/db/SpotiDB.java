@@ -1,13 +1,75 @@
 package com.SpotiFx.db;
+import com.SpotiFx.db.Classes.QueryResult;
 import com.SpotiFx.dotenv.envLoader;
 
 import java.io.IOException;
 
+import com.SpotiFx.main.Class.Player.Song.song;
+import com.SpotiFx.main.Class.Player.Song.songCredits;
+import com.SpotiFx.main.Class.Player.Song.song.songBuilder;
+
 public class SpotiDB extends ConnectionDB {
     public SpotiDB() {
-
         super(loadDBHost(),loadDBPort(),loadDBUser(),loadDBPassword(),loadDBName());
+    }
 
+
+    //public Boolean addUser(User) (Not ready yet)
+
+    public song addSongToDB(song newSong) {
+        String title = newSong.getTitle();
+        String artist = newSong.getArtist();
+        String album = newSong.getAlbum();
+        String genre = newSong.getGenre();
+        int year = newSong.getYear();
+        songCredits credits = newSong.getSongCredits();
+        String SQL_EXECUTE = "INSERT INTO songs(title,artist_id,album_id,year,genre,credits) VALUES (?,?,?,?,?,?)";
+        Object[] params = {title,1,1,year,genre,credits.stringify()};
+
+        int affectedRows = this.executeSync(SQL_EXECUTE,params);
+
+        songBuilder oldBuider = newSong.toBuilder();
+        QueryResult result = this.firstQuerySync("SELECT * FROM songs ORDER BY id DESC LIMIT 1");
+
+        newSong = oldBuider.id((int) result.get("id")).build();
+        return newSong;
+    }
+
+    public song changeSongInfo(int songId , song newSong , song oldSong ) {
+        String SQL_EXECUTE = "UPDATE songs SET title=?,artist_id=?,album_id=?,duration=?,year=?,genre=?,credits=? WHERE id=?";
+        String title = newSong.getTitle();
+        String artist = newSong.getArtist();
+        String album = newSong.getAlbum();
+        String genre = newSong.getGenre();
+        int duration = newSong.getDuration();
+        int year = newSong.getYear();
+        int id = newSong.getSongId();
+        songCredits credits = newSong.getSongCredits();
+        Object[] params = { title , 1 , 1 , duration , year , genre , credits.stringify() , id };
+        int affectedRows = this.executeSync(SQL_EXECUTE,params);
+        if(affectedRows == 0) return oldSong;
+        return newSong;
+    }
+
+    public song changeSongInfo(int songId , songBuilder builder , song oldSong ) {
+        return this.changeSongInfo(songId , builder.build() , oldSong );
+    }
+
+    public song changeSongInfo(int songId , song newSong) {
+        return this.changeSongInfo(songId , newSong , null);
+    }
+
+    public song changeSongInfo(int songId , songBuilder builder) {
+        return this.changeSongInfo(songId , builder , null);
+    }
+
+
+    public song removeSongFromDB(song rmSong)  {
+        String SQL_QUERY = "DELETE FROM songs WHERE id=?";
+        Object[] params = { rmSong.getSongId() };
+        int affectedRows = this.executeSync(SQL_QUERY,params);
+        if(affectedRows == 0) return rmSong;
+        return null;
     }
 
 
