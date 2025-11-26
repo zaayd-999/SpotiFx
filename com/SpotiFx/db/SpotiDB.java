@@ -8,6 +8,9 @@ import com.SpotiFx.main.Class.Player.Song.song;
 import com.SpotiFx.main.Class.Player.Song.songCredits;
 import com.SpotiFx.main.Class.Player.Song.song.songBuilder;
 import com.SpotiFx.main.Class.Player.PlayList.playList;
+import com.SpotiFx.main.Class.Player.PlayList.Album;
+import com.SpotiFx.main.Class.User.artist;
+import com.SpotiFx.main.Class.User.user;
 
 public class SpotiDB extends ConnectionDB {
     public SpotiDB() {
@@ -15,17 +18,34 @@ public class SpotiDB extends ConnectionDB {
     }
 
 
-    //public Boolean addUser(User) (Not ready yet)
+    public user addUserToDB(user user) {
+        String username = user.getUsername();
+        String email = user.getEmail();
+        String password = user.getPassword(); // Add hash password
+        String SQL_EXECUTE = "INSERT INTO users(username,password,email) VALUES (?,?,?)";
+        Object[] params = new Object[]{ username , password , email };
+        int affectedRows = this.executeSync(SQL_EXECUTE,params);
+
+        return null;
+    }
+
+    public void deleteUserFromDB(user rmUser) {
+        String SQL_EXECUTE = "DELETE FROM users WHERE id=?";
+        Object[] params = new Object[]{rmUser.getId()};
+
+        this.executeSync(SQL_EXECUTE,params);
+    }
+
 
     public song addSongToDB(song newSong) {
         String title = newSong.getTitle();
-        String artist = newSong.getArtist();
-        String album = newSong.getAlbum();
+        artist artist = newSong.getArtist();
+        Album album = newSong.getAlbum();
         String genre = newSong.getGenre();
         int year = newSong.getYear();
         songCredits credits = newSong.getSongCredits();
         String SQL_EXECUTE = "INSERT INTO songs(title,artist_id,album_id,year,genre,credits) VALUES (?,?,?,?,?,?)";
-        Object[] params = {title,1,1,year,genre,credits.stringify()};
+        Object[] params = {title,artist.getId(),album.getPlayListId(),year,genre,credits.stringify()};
 
         int affectedRows = this.executeSync(SQL_EXECUTE,params);
 
@@ -39,14 +59,14 @@ public class SpotiDB extends ConnectionDB {
     public song changeSongInfo(int songId , song newSong , song oldSong ) {
         String SQL_EXECUTE = "UPDATE songs SET title=?,artist_id=?,album_id=?,duration=?,year=?,genre=?,credits=? WHERE id=?";
         String title = newSong.getTitle();
-        String artist = newSong.getArtist();
-        String album = newSong.getAlbum();
+        artist artist = newSong.getArtist();
+        Album album = newSong.getAlbum();
         String genre = newSong.getGenre();
         int duration = newSong.getDuration();
         int year = newSong.getYear();
         int id = newSong.getSongId();
         songCredits credits = newSong.getSongCredits();
-        Object[] params = { title , 1 , 1 , duration , year , genre , credits.stringify() , id };
+        Object[] params = { title , artist.getId() , album.getPlayListId() , duration , year , genre , credits.stringify() , id };
         int affectedRows = this.executeSync(SQL_EXECUTE,params);
         if(affectedRows == 0) return oldSong;
         return newSong;

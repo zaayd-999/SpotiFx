@@ -6,10 +6,10 @@ import com.SpotiFx.main.Class.Player.PlayList.UserPlayList;
 import com.SpotiFx.main.Class.Player.Song.contributionType;
 import com.SpotiFx.main.Class.Player.Song.songCredits;
 import com.SpotiFx.main.Class.Player.Song.song;
-
+*/
 // Database Class (extended from ConnectionDB)
 import com.SpotiFx.db.SpotiDB;
-*/
+
 // User Class
 
 import com.SpotiFx.main.Class.User.*;
@@ -17,15 +17,15 @@ import com.SpotiFx.main.Class.User.*;
 public class Main {
     public static void main(String[] args) {
 
-        //SpotiDB database = new SpotiDB();
-        /*database.connect(error -> {
+        SpotiDB database = new SpotiDB();
+        database.connect(error -> {
             if(error != null) {
                 System.out.println("Error: Failed to establish connection to the MySQL database server\n" + error.getMessage());
                 System.exit(2); // Exit (DB error)
             } else {
                 System.out.println("Success: Connected to the MySQL database server");
             }
-        });*/
+        });
         /*
         songCredits s = new songCredits();
         s.addContributors(contributionType.Artist,"Ada Wong" , "Luis Sera");
@@ -42,5 +42,10 @@ public class Main {
         //RE2S = database.addSongToDB(RE2S);
         */
 
+
+        artist sahmoudi = new artist(1,"Sahmoudi Issam" , "sahmoudi@gmail.com" , "password1234");
+        //database.addUserToDB(sahmoudi);
+        database.deleteUserFromDB(sahmoudi);
+        database.disconnect();
     }
 }

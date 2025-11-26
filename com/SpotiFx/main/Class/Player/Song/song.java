@@ -1,11 +1,13 @@
 package com.SpotiFx.main.Class.Player.Song;
 
+import com.SpotiFx.main.Class.User.artist;
+import com.SpotiFx.main.Class.Player.PlayList.Album;
 
 public class song {
     private final int id;
     private final String title;
-    private final String album;
-    private final String artist;
+    private final Album album;
+    private final artist artist;
     private final int duration;
     private String filePath;
     private String lyricsPath;
@@ -45,8 +47,8 @@ public class song {
     }
     // Getters
     public String getTitle() { return this.title; }
-    public String getArtist() { return this.artist; }
-    public String getAlbum() { return this.album; }
+    public artist getArtist() { return this.artist; }
+    public Album getAlbum() { return this.album; }
     public int getDuration() { return this.duration; }
     public int getYear() { return this.year; }
     public String getGenre() { return this.genre; }
@@ -64,7 +66,7 @@ public class song {
         return new songBuilder();
     }
 
-    public static songBuilder builder(String title , String artist) {
+    public static songBuilder builder(String title , artist artist) {
         return new songBuilder(title,artist);
     }
 
@@ -75,8 +77,8 @@ public class song {
 
     public static class songBuilder{
         private String title;
-        private String album="Unknown Album";
-        private String artist;
+        private Album album=null;
+        private artist artist;
         private int duration=0;
         private String filePath;
         private String lyricsPath;
@@ -85,7 +87,7 @@ public class song {
         private songCredits SongCredits;
         private int id=-1;
 
-        public songBuilder(String title , String artist) {
+        public songBuilder(String title , artist artist) {
             this.title = title;
             this.artist = artist;
         }
@@ -101,13 +103,12 @@ public class song {
             return this;
         }
 
-        public songBuilder artist(String artist) {
+        public songBuilder artist(artist artist) {
             this.artist = artist;
             return this;
         }
 
-        public songBuilder album(String album) {
-            if(album == null) album = "Unknown Album";
+        public songBuilder album(Album album) {
             this.album = album;
             return this;
         }
@@ -194,6 +195,6 @@ public class song {
 
     @Override
     public String toString() {
-        return String.format("%s by %s - %s (%s)", this.title, this.artist, this.album, this.getFormattedDuration());
+        return String.format("%s by %s - %s (%s)", this.title, this.artist.getUsername(), this.album, this.getFormattedDuration());
     }
 }

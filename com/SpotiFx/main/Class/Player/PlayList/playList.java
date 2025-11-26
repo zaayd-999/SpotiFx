@@ -12,19 +12,22 @@ public abstract class playList {
     private playlistType type;
     private int id;
 
-    public playList(int id) {
+    public playList(int id , playlistType type) {
         this.playList = new playlist();
         this.currentSong = -1;
         this.totalSongs = 0;
         this.playing = false;
         this.id = id;
+        this.type = type;
     }
 
     public int getPlayListId() {
         return this.id;
     }
 
-    public abstract playlistType getPlayListType();
+    public playlistType getPlayListType() {
+        return this.type;
+    }
 
     public void addSong(song thisSong) {
         if(this.playList.containsValue(thisSong)) return;
