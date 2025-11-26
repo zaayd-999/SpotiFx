@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.SpotiFx.main.Class.Player.Song.song;
 import com.SpotiFx.main.Class.Player.Song.songCredits;
 import com.SpotiFx.main.Class.Player.Song.song.songBuilder;
+import com.SpotiFx.main.Class.Player.PlayList.playList;
 
 public class SpotiDB extends ConnectionDB {
     public SpotiDB() {
@@ -63,7 +64,6 @@ public class SpotiDB extends ConnectionDB {
         return this.changeSongInfo(songId , builder , null);
     }
 
-
     public song removeSongFromDB(song rmSong)  {
         String SQL_QUERY = "DELETE FROM songs WHERE id=?";
         Object[] params = { rmSong.getSongId() };
@@ -72,6 +72,9 @@ public class SpotiDB extends ConnectionDB {
         return null;
     }
 
+    public playList addPlayListToDB(playList newPlaylist) {
+        return null;
+    }
 
     private static String loadDBHost() { return getEnv("DB_HOST"); }
     private static String loadDBPort() { return getEnv("DB_PORT"); }

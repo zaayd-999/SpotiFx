@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public abstract class playList {
     private final playlist playList;
-    private int totalSongs;
+    private int totalSongs = 0;
     private int currentSong;
     private boolean playing;
     private playlistType type;
@@ -24,9 +24,7 @@ public abstract class playList {
         return this.id;
     }
 
-    public playlistType getPlayListType() {
-        return this.type;
-    }
+    public abstract playlistType getPlayListType();
 
     public void addSong(song thisSong) {
         if(this.playList.containsValue(thisSong)) return;
@@ -166,5 +164,19 @@ public abstract class playList {
             }
             return orderedSongs;
         }
+    }
+
+    public String toJSON() {
+        StringBuilder json = new StringBuilder();
+        json.append("{\n");
+        for (int i = 0 ; i < this.totalSongs ; i++) {
+            if(this.playList.get(i) != null) {
+                json.append('\"'+i+ "\":\"" + this.playList.get(i).getSongId() + '"'+"\n");
+            } else {
+                break;
+            }
+        }
+        json.append("}");
+        return json.toString();
     }
 }
