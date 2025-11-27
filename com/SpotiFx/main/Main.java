@@ -43,9 +43,9 @@ public class Main {
         */
 
 
-        artist sahmoudi = new artist(1,"Sahmoudi Issam" , "sahmoudi@gmail.com" , "password1234");
-        //database.addUserToDB(sahmoudi);
-        database.deleteUserFromDB(sahmoudi);
+        artist sahmoudi = new artist(1,"l" , "sahmoudi@gmail.com" , "password1234");
+        database.addUserToDB(sahmoudi);
+        //database.deleteUserFromDB(sahmoudi);
         database.disconnect();
     }
 }

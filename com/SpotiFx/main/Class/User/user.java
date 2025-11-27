@@ -7,16 +7,26 @@ public class user {
     protected String password;
     protected userTypes type;
 
-    public user(int id, String username, String email, String password, userTypes type) {
+    /*private user(int id, String username, String email, String password, userTypes type) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.type = type;
+    }*/
+
+    private user(userBuilder builder) {
+        this.id = builder.id;
+        this.email = builder.email;
+        this.type = builder.type;
+        this.password = builder.password;
+        this.username = builder.username;
     }
 
 
-
+    public userBuilder toBuilder() {
+        return new userBuilder(this.id,this.username).type(this.type).email(this.email).password(this.password);
+    }
 
     public int getId() { return id; }
     public String getUsername() { return username; }
@@ -32,4 +42,56 @@ public class user {
         return this.type == userTypes.ARTIST;
     }
 
+
+    public static class userBuilder {
+        private String username;
+        private int id=-1;
+        private String email;
+        private String password;
+        private userTypes type;
+        public userBuilder() {};
+
+        public userBuilder(int id , String username) {
+            this.id = id;
+            this.username = username;
+        }
+
+        public userBuilder(String username , int id) {
+            this(id,username);
+        }
+
+        public userBuilder(int id) {
+            this(id,null);
+        }
+
+        public userBuilder(String username) {
+            this(-1,username);
+        }
+
+        public userBuilder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public userBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public userBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public userBuilder type(userTypes type) {
+            this.type = type;
+            return this;
+        }
+
+        public user build() {
+            if(this.username==null) throw new IllegalStateException("username is required");
+            if(this.id == -1) throw new IllegalStateException("Id is required");
+            return new user(this);
+        }
+    }
 }
