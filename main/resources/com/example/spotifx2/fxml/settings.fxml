@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      styleClass="player-container"
+      spacing="20"
+      alignment="CENTER">
+
+    <padding><Insets top="40"/></padding>
+
+    <Label text="Settings View" style="-fx-text-fill: white; -fx-font-size: 24;"/>
+    <Label text="This is the settings screen" style="-fx-text-fill: #6b7280;"/>
+</VBox>

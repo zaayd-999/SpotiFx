@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.layout.StackPane?>
+<VBox spacing="20" styleClass="player-root" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.spotifx2.controllers.PlayerController">
+
+    <!-- SEARCH BAR -->
+    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header-section">
+        <Label styleClass="page-title" text="Player" />
+
+        <!--for space -->
+        <Pane HBox.hgrow="ALWAYS" />
+
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="search-box">
+            <Label styleClass="search-icon" text="🔍" />
+            <TextField fx:id="searchField" promptText="Search songs, artists.." styleClass="search-field" HBox.hgrow="ALWAYS" />
+        </HBox>
+    </HBox>
+
+
+    <!-- MAIN CONTENT -->
+    <HBox spacing="40" styleClass="main-container">
+
+        <!-- LEFT: ALBUM CARD -->
+        <VBox spacing="15" styleClass="album-card">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+
+            <ImageView fx:id="albumImage"
+                       fitHeight="300"
+                       fitWidth="430"
+                       preserveRatio="true"
+                       styleClass="album-image" />
+
+            <VBox spacing="4" styleClass="album-text-container">
+                <Label fx:id="songTitle" styleClass="album-title" text="Album" />
+                <Label fx:id="songArtist" styleClass="album-artist" text="Artist" />
+                <Label fx:id="songAlbum" styleClass="album-subtext" text="Song" />
+            </VBox>
+            <!--
+            <ListView fx:id="playlistView" styleClass="playlist-listview" VBox.vgrow="ALWAYS" />
+            -->
+        </VBox>
+
+
+        <!-- RIGHT: PLAYER CARD -->
+        <VBox spacing="25" styleClass="player-card">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <!-- NOW PLAYING TEXT -->
+            <VBox spacing="5">
+                <Label fx:id="nowPlayingLabel" styleClass="np-label" text="Now Playing" />
+
+                <Label fx:id="titleLabel" styleClass="np-title" text="Song Title" />
+
+                <Label fx:id="artistLabel" styleClass="np-artist" text="Artist Name" />
+            </VBox>
+
+
+            <!-- SLIDER -->
+            <HBox alignment="CENTER" spacing="10">
+                <Slider fx:id="progressSlider" styleClass="progress-slider" HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <HBox alignment="CENTER" spacing="10">
+                <Label fx:id="currentTime" styleClass="time-label" text="0:00" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="totalTime" styleClass="time-label" text="4:05" />
+            </HBox>
+
+            <!--BUTTONS-->
+            <HBox alignment="CENTER" spacing="15">
+                <Button fx:id="shufButton" onAction="#onShuffleClicked" styleClass="control-button" >
+                    <graphic>
+                        <StackPane styleClass="icon-container">
+                            <SVGPath content="m18 14 4 4-4 4" styleClass="svg-icon"/>
+                            <SVGPath content="m18 2 4 4-4 4" styleClass="svg-icon"/>
+                            <SVGPath content="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22" styleClass="svg-icon"/>
+                            <SVGPath content="M2 6h1.972a4 4 0 0 1 3.6 2.2" styleClass="svg-icon"/>
+                            <SVGPath content="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45" styleClass="svg-icon" />
+                        </StackPane>
+                    </graphic>
+                </Button>
+                <Button fx:id="prevButton" onAction="#onPrevClicked" styleClass="control-button" >
+                    <graphic>
+                        <StackPane styleClass="icon-container">
+                            <SVGPath content="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" styleClass="svg-icon"/>
+                            <SVGPath content="M3 20V4" styleClass="svg-icon"/>
+                        </StackPane>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="playButton" onAction="#onPlayClicked" styleClass="control-main" >
+                    <graphic>
+                        <SVGPath content="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" styleClass="svg-icon"/>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="nextButton" onAction="#onNextClicked" styleClass="control-button" >
+                    <graphic>
+                        <StackPane styleClass="icon-container">
+                            <SVGPath content="M21 4v16" styleClass="svg-icon"/>
+                            <SVGPath content="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" styleClass="svg-icon"/>
+                        </StackPane>
+                    </graphic>
+                </Button>
+                <Button fx:id="repButton" onAction="#onRepeatClicked" styleClass="control-button" >
+                    <graphic>
+                        <StackPane styleClass="icon-container">
+                            <SVGPath content="m17 2 4 4-4 4" styleClass="svg-icon"/>
+                            <SVGPath content="M3 11v-1a4 4 0 0 1 4-4h14" styleClass="svg-icon"/>
+                            <SVGPath content="m7 22-4-4 4-4" styleClass="svg-icon"/>
+                            <SVGPath content="M21 13v1a4 4 0 0 1-4 4H3" styleClass="svg-icon"/>
+                        </StackPane>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <!-- VOLUME -->
+            <HBox alignment="CENTER" spacing="10" styleClass="volume-container">
+                <Label styleClass="volume-icon" text="🔉" />
+                <Slider fx:id="volumeSlider" styleClass="volume-slider" HBox.hgrow="ALWAYS" />
+                <Label fx:id="volumePercent" styleClass="volume-percent" text="55%" />
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

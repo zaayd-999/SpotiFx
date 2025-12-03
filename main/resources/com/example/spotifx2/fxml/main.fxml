@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.spotifx2.controllers.MainController">
+    <left>
+        <VBox prefWidth="240" styleClass="sidebar">
+            <!-- Logo -->
+            <HBox alignment="CENTER_LEFT" styleClass="logo-section">
+                <ImageView fitHeight="40" fitWidth="40" styleClass="logo-icon" />
+                <VBox>
+                    <Label styleClass="app-title" text="SpotiFX" />
+                    <Label styleClass="app-subtitle" text="Player" />
+                </VBox>
+            </HBox>
+
+            <!-- Navigation -->
+            <VBox styleClass="nav-section">
+                <Button fx:id="playerBtn" onAction="#showPlayer"  styleClass="nav-button" text="Player" />
+                <Button fx:id="playlistBtn" onAction="#showPlaylist" styleClass="nav-button" text="Playlist" />
+                <Button fx:id="settingsBtn" onAction="#showSettings"  styleClass="nav-button" text="Settings" />
+            </VBox>
+            <!-- Playing Card -->
+            <VBox styleClass="now-playing-card">
+                <Label styleClass="card-title" text="Now Playing" />
+                <Label styleClass="song-title" text="song name" />
+                <Label styleClass="artist-name" text="artist name" />
+            </VBox>
+            <!-- for space -->
+            <Pane VBox.vgrow="ALWAYS"/>
+
+            <!-- copyright -->
+            <VBox styleClass="copyright">
+                <Label styleClass="copyright-text" text="© 2025 SpotiFX" />
+            </VBox>
+        </VBox>
+    </left>
+
+
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area" />
+    </center>
+
+</BorderPane>
