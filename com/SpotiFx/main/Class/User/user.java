@@ -7,15 +7,7 @@ public class user {
     protected String password;
     protected userTypes type;
 
-    /*private user(int id, String username, String email, String password, userTypes type) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.type = type;
-    }*/
-
-    private user(userBuilder builder) {
+    protected user(userBuilder builder) {
         this.id = builder.id;
         this.email = builder.email;
         this.type = builder.type;
@@ -44,11 +36,12 @@ public class user {
 
 
     public static class userBuilder {
-        private String username;
-        private int id=-1;
-        private String email;
-        private String password;
-        private userTypes type;
+        protected String username;
+        protected int id=-1;
+        protected String email;
+        protected String password;
+        protected userTypes type;
+
         public userBuilder() {};
 
         public userBuilder(int id , String username) {
@@ -85,6 +78,11 @@ public class user {
 
         public userBuilder type(userTypes type) {
             this.type = type;
+            return this;
+        }
+
+        public userBuilder username(String username) {
+            this.username = username;
             return this;
         }
 

@@ -11,6 +11,10 @@ import com.SpotiFx.main.Class.Player.PlayList.playList;
 import com.SpotiFx.main.Class.Player.PlayList.Album;
 import com.SpotiFx.main.Class.User.artist;
 import com.SpotiFx.main.Class.User.user;
+import com.SpotiFx.main.Class.User.user.userBuilder;
+import com.SpotiFx.main.Class.User.listener.listenerBuilder;
+import com.SpotiFx.main.Class.User.artist.artistBuilder;
+import com.SpotiFx.main.Class.User.userTypes;
 
 public class SpotiDB extends ConnectionDB {
     public SpotiDB() {
@@ -22,11 +26,21 @@ public class SpotiDB extends ConnectionDB {
         String username = user.getUsername();
         String email = user.getEmail();
         String password = user.getPassword(); // Add hash password
-        String SQL_EXECUTE = "INSERT INTO users(username,password,email) VALUES (?,?,?)";
-        Object[] params = new Object[]{ username , password , email };
+        int type = user.getType().getValue();
+        String SQL_EXECUTE = "INSERT INTO users(username,password,email,type) VALUES (?,?,?,?)";
+        Object[] params = new Object[]{ username , password , email , type };
         int affectedRows = this.executeSync(SQL_EXECUTE,params);
-
-        return null;
+        userBuilder oldBuilder = user.toBuilder();
+        QueryResult result = this.firstQuerySync("SELECT * FROM users ORDER BY id DESC LIMIT 1");
+        if(type == 0) {
+            listenerBuilder thisBuilder = new listenerBuilder((int) result.get("id"),username).email(email).password(password).type(userTypes.LISTENER);
+            return thisBuilder.build();
+        } else if (type == 1) {
+            artistBuilder thisBuilder = new artistBuilder((int) result.get("id"),username).email(email).password(password).type(userTypes.ARTIST);
+            return thisBuilder.build();
+        }
+        user = oldBuilder.id((int) result.get("id")).build();
+        return user;
     }
 
     public void deleteUserFromDB(user rmUser) {
